@@ -1,0 +1,75 @@
+#!/bin/bash
+echo '/************************************************************************/'
+echo '/*  IP INFO                                                             */'
+echo '/************************************************************************/'
+ifconfig | grep -i mask | grep -i inet
+
+osname=`uname`
+if [ $osname == "Darwin" ]; then
+    echo "ERROR"
+    echo "    this mem cmd is not for apple osx system. exit"
+    exit
+fi
+
+echo '/************************************************************************/'
+echo '/*  DUBBO SERVICE PROCESS RSS MEMORY INFORMATION                        */'
+echo '/************************************************************************/'
+svc=(`ps aux | sort | grep "dubbo-.\..\..\.jar" | awk -F':' '{print $40}' | awk -F'/' '{print $4}' | awk -F'-' '{print $1}'`)
+if [ ${#svc[@]} = 0 ]; then
+	echo "No process found now"
+fi
+
+pid=`ps aux | sort | grep -v grep | grep "dubbo-.\..\..\.jar" | awk '{print $2}'`
+idx=0
+for i in $pid; do
+	rss=`cat /proc/$i/status | grep VmRSS | awk '{print $2}'`
+	let rss=$rss/1024
+	echo "pid=$i rss=$rss(MB) process_name=${svc[$idx]}"
+	let idx=$idx+1
+done
+
+echo
+echo
+echo '/************************************************************************/'
+echo '/*  ZOOKEEPER PROCESS     RSS MEMORY INFORMATION                        */'
+echo '/************************************************************************/'
+svc=(`ps aux | sort | grep -v grep | grep zookeeper.log.dir | awk '{print $15}' | awk -F':' '{print $1}' | awk -F'\.\.' '{print $1}' | sort`)
+if [ ${#svc[@]} = 0 ]; then
+	echo "No process found now"
+fi
+
+pid=`ps aux | sort | grep -v grep | grep zookeeper.log.dir | awk '{print $2}'`
+idx=0
+for i in $pid; do
+	rss=`cat /proc/$i/status | grep VmRSS | awk '{print $2}'`
+	let rss=$rss/1024
+	echo "pid=$i rss=$rss(MB) process_name=${svc[$idx]}"
+	let idx=$idx+1
+done
+
+echo
+echo
+echo '/************************************************************************/'
+echo '/*  WEB APPLICATION       RSS MEMORY INFORMATION                        */'
+echo '/************************************************************************/'
+svc=(`ps aux | sort | grep -v grep | grep tomcat | awk '{print $12}' | awk -F'=' '{print $2}' | awk -F'/' '{print $4}'`)
+if [ ${#svc[@]} = 0 ]; then
+	echo "No process found now"
+fi
+
+pid=`ps aux | sort | grep -v grep | grep tomcat | awk '{print $2}'`
+idx=0
+for i in $pid; do
+	rss=`cat /proc/$i/status | grep VmRSS | awk '{print $2}'`
+	let rss=$rss/1024
+	echo "pid=$i rss=$rss(MB) process_name=${svc[$idx]}"
+	let idx=$idx+1
+done
+
+
+echo
+echo
+echo '/************************************************************************/'
+echo '/*  SYSTEM PROCESSES      RSS MEMORY INFORMATION                        */'
+echo '/************************************************************************/'
+cat /proc/meminfo | head -n 7

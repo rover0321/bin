@@ -1,0 +1,105 @@
+#!/usr/bin/expect   
+set timeout -1
+
+set username [lindex $argv 0] 
+set serverip [lindex $argv 1] 
+set password [lindex $argv 2] 
+set portnumb [lindex $argv 3] 
+ 
+spawn ssh -p $portnumb $username@$serverip
+expect { 
+    "(yes/no)?" { send "yes\n"; exp_continue } 
+    "password:" { send "$password\n" } 
+} 
+expect "Welcome"
+
+send "alias e='clear'\n"
+send "alias c='pwd && echo ------------------------------------------------------------  && ls -lh'\n"
+send "alias c..='cd - && c'\n"
+send "alias c.='cd .. && c'\n"
+send "alias t='cd ./tmp'\n"
+send "alias x='cd `cat ~/.alias.x` && c'\n"
+
+send "alias E='exit'\n"
+send "alias X='exit'\n"
+send "alias cfg='./configure'\n"
+send "alias cls='clear'\n"
+send "alias cp='cp -r'\n"
+send "alias dir='ls'\n"
+send "alias du='du -m'\n"
+send "alias his='history'\n"
+send "alias jx='tar jxvf'\n"
+send "alias l='ls -CF'\n"
+send "alias la='ls -lah'\n"
+send "alias ll='ls -alF'\n"
+send "alias loc='locate'\n"
+send "alias log='tail -f ~/ins/tmc/logs/catalina.out'\n"
+send "alias lr='ls -ltrh'\n"
+send "alias mci='mvn clean install -Dmaven.test.skip=true'\n"
+send "alias mdb='mysql -uroot -p18a7e57ea9c0aeb3c0656103762f35bd18dedf88'\n"
+send "alias me='vi ~/.bashrc'\n"
+send "alias mi='mvn install'\n"
+send "alias mpi='mvn package install -Dmaven.test.skip=true'\n"
+send "alias rm='rm -fr'\n"
+send "alias saa='sudo apt-get autoremove'\n"
+send "alias sai='sudo apt-get install'\n"
+send "alias sar='sudo apt-get remove'\n"
+send "alias sas='sudo apt-cache search'\n"
+send "alias sau='sudo apt-get update'\n"
+send "alias sauu='sudo apt-get update && sudo apt-get upgrade'\n"
+send "alias showip='ifconfig | grep -i mask | grep -i inet'\n"
+send "alias taf='tail -f'\n"
+send "alias tx='tar xvf'\n"
+send "alias use='. ~/.bashrc'\n"
+send "alias uz='unzip'\n"
+send "alias vit='vi -t'\n"
+send "alias where='find ./ | grep --color=auto'\n"
+send "alias zx='tar zxvf'\n"
+
+send "alias gad='git add'\n"
+send "alias gbr='git branch'\n"
+send "alias gcm='git commit'\n"
+send "alias gco='git checkout'\n"
+send "alias gcp='git cherry-pick'\n"
+send "alias gdf='git diff'\n"
+send "alias gdt='git difftool'\n"
+send "alias gfp='git format-patch'\n"
+send "alias ghp='git help'\n"
+send "alias glg='git log'\n"
+send "alias gmg='git merge'\n"
+send "alias gmv='git mv'\n"
+send "alias gpl='git pull'\n"
+send "alias gps='git push'\n"
+send "alias grb='git rebase'\n"
+send "alias grm='git rm'\n"
+send "alias grs='git reset'\n"
+send "alias gsh='git show'\n"
+send "alias gst='git status'\n"
+send "alias gtg='git tag'\n"
+send "alias gwc='git whatchanged'\n"
+
+
+send "alias bin='cd ~/bin && c'\n"
+send "alias doc='cd ~/doc && c'\n"
+send "alias dwn='cd ~/dwn && c'\n"
+send "alias img='cd ~/img && c'\n"
+send "alias ini='cd ~/ini && c'\n"
+send "alias ins='cd ~/ins && c'\n"
+send "alias mac='cd ~/mac && c'\n"
+send "alias mnt='cd ~/mnt && c'\n"
+send "alias mov='cd ~/mov && c'\n"
+send "alias sft='cd ~/sft && c'\n"
+send "alias src='cd ~/src && c'\n"
+send "alias tmp='cd ~/tmp && c'\n"
+send "alias vmw='cd ~/vmw && c'\n"
+send "alias wks='cd ~/wks && c'\n"
+
+
+
+send "e && c\n"
+
+
+
+
+interact 
+

@@ -1,0 +1,2 @@
+#!/bin/bash
+echo `cat ~/.encrc`@$1 | shasum | rev | shasum
