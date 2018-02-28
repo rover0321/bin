@@ -1,6 +1,7 @@
 #!/bin/bash
 rc=~/.conrc
 conrc=~/.con
+touch $rc $conrc
 cfg=
 nam=
 sip=
@@ -98,14 +99,17 @@ copy_and_login() {
 
         if [ -z "$log" ]; then
             echo expect_copy $src $sip $usr $psw $dst $pot
-            expect_copy $src $sip $usr $psw $dst $pot
+            read w
+            expect_copy $src $sip $usr $psw$w $dst $pot
         else 
             echo expect_copy_ssh $src $sip $usr $psw $dst $pot
-            expect_copy_ssh $src $sip $usr $psw $dst $pot
+            read w
+            expect_copy_ssh $src $sip $usr $psw$w $dst $pot
         fi
     else
         echo expect_ssh $usr $sip $psw $pot
-        expect_ssh $usr $sip $psw $pot
+        read w
+        expect_ssh $usr $sip $psw$w $pot
     fi
 }
 
