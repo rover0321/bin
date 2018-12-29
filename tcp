@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+log_file=$1
+connection_in_established=`cat $log_file | grep tcp | grep ESTABLISHED | wc -l`
+connection_in_close_wait=`cat $log_file | grep tcp | grep CLOSE_WAIT | wc -l`
+connection_in_time_wait=`cat $log_file | grep tcp | grep TIME_WAIT | wc -l`
+
+total_connections=$[$connection_in_established + $connection_in_close_wait + $connection_in_time_wait]
+per_est=`echo "scale=2; $connection_in_established/$total_connections" | bc`
+per_close=`echo "scale=2; $connection_in_close_wait/$total_connections" | bc`
+per_time=`echo "scale=2; $connection_in_time_wait/$total_connections" | bc`
+echo "TCP Connections Statistics: "
+echo "Total connections: "$total_connections
+echo "ESTABLISHED: "$connection_in_established "in $per_est"
+echo "CLOSE_WAIT: "$connection_in_close_wait "in $per_close"
+echo "TIME_WAIT: "$connection_in_time_wait "in $per_time"
